@@ -1,36 +1,86 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./chandler-new-purchase.html">
+<link rel="import" href="./chandler-purchase-item.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-selection-column.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="./my-icons.html">
 
 <dom-module id="chandler-shopping">
   <template>
     <style include="shared-styles">
-      :host {
+      :host {        
         display: block;
-        padding: 10px;
+        padding: 10px;        
       }
     </style>
 
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+    <div class="card">      
+      <chandler-new-purchase on-add-purchase-btn-pressed="_addPurchase"></chandler-new-purchase>
+      <hr><br>
+
+      <vaadin-grid height-by-rows items="[[shoppingList]]">
+
+          <!-- <vaadin-grid-selection-column auto-select frozen> </vaadin-grid-selection-column> -->
+    
+          <vaadin-grid-column width="3em">
+            <template class="header">
+              <vaadin-grid-sorter path="firstName">Name</vaadin-grid-sorter>
+            </template>
+            <template>[[item.name]]</template>
+          </vaadin-grid-column>
+    
+          <vaadin-grid-column width="3em">
+            <template class="header">
+              <vaadin-grid-sorter path="lastName">Price</vaadin-grid-sorter>
+            </template>
+            <template>[[item.price]]</template>
+          </vaadin-grid-column>
+    
+          <vaadin-grid-column width="3em" flex-grow="2">
+            <template class="header">
+              <vaadin-grid-sorter path="address.street">Purchased</vaadin-grid-sorter>
+            </template>
+            <template is="dom-if" if="false">
+              <iron-icon icon="myicons:done"></iron-icon>                              
+            </template>
+          </vaadin-grid-column>
+    
+        </vaadin-grid>
+
+      <!-- <template is="dom-repeat" items="[[shoppingList]]" as="purchase">
+        <chandler-purchase-item purchase="[[purchase]]"></chandler-purchase-item>        
+      </template> -->
     </div>
   </template>
 
   <script>
     class ChandlerShopping extends Polymer.Element {
       static get is() { return 'chandler-shopping'; }
+      static get properties() { return {
+        shoppingList: {
+          type: Array,
+          value: [{
+            name: "Iron",
+            price: 25,
+            purchased: false
+          },{
+            name: "Antenna",
+            price: 50,
+            purchased: false
+          },{
+            name: "Trash",
+            price: 10,
+            purchased: true
+          }]
+        }
+      }}
+
+      _addPurchase(e) {
+        this.push('shoppingList', e.detail.purchase);
+      }
     }
 
     window.customElements.define(ChandlerShopping.is, ChandlerShopping);

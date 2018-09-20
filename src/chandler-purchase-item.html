@@ -1,0 +1,45 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="./my-icons.html">
+
+<dom-module id="chandler-purchase-item">
+  <template>
+    <style>
+      :host {
+        background-color: #757575;
+      }
+
+      .purchase-wrapper {
+        margin: 8px 0;        
+        color: #757575;        
+        background-color: #fff;
+      }
+
+      h3 {
+        display: inline-block;
+        margin: 0;
+      }
+
+      iron-icon.close {
+        float: right;
+      }
+    </style>
+    <div class="purchase-wrapper">
+      <h3>{{purchase.name}} - {{purchase.price}}€</h3>            
+      <iron-icon icon="myicons:done"></iron-icon>
+      <iron-icon class="close" icon="myicons:close"></iron-icon>
+    </div>
+  </template>
+  <script>
+    class ChandlerPurchaseItem extends Polymer.Element {
+      static get is() { return "chandler-purchase-item"}      
+      static get properties() { return {
+        purchase: {
+          type: Object
+        }
+      }}
+    }
+
+  window.customElements.define(ChandlerPurchaseItem.is, ChandlerPurchaseItem);
+  </script>
+</dom-module>

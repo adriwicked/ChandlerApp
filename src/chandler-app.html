@@ -17,19 +17,20 @@
 <link rel="lazy-import" href="chandler-invitations.html">
 <link rel="lazy-import" href="my-view404.html">
 
-<dom-module id="my-app">
+<dom-module id="chandler-app">
   <template>
     <style>
       body {
         margin: 0;
         font-family: 'Roboto', 'Noto', sans-serif;
-        background-color: #eee;
-      }
-
+      }      
+      
       :host {
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
-
+        --app-background-color: #0f1213;
+        --app-drawer-width: 200px;
+        
         display: block;
       }
 
@@ -115,7 +116,7 @@
     Polymer.setPassiveTouchGestures(true);
 
     class MyApp extends Polymer.Element {
-      static get is() { return 'my-app'; }
+      static get is() { return 'chandler-app'; }
 
       static get properties() {
         return {
@@ -173,8 +174,6 @@
         });
       }
     }        
-
-    
 
     window.customElements.define(MyApp.is, MyApp);
   </script>

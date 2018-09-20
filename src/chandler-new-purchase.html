@@ -1,0 +1,94 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="chandler-new-purchase">
+  <template>
+    <style include="shared-styles">
+      :host {        
+        display: block;
+        margin: 0 0 60px 0;
+      }
+
+      paper-input {
+        display: inline-block;
+      }
+      
+      .text-inputs-wrapper {
+        margin-bottom: 0.3em;
+      }
+
+      .name-input {
+        width: 60%;
+      }
+
+      .price-input {
+        width: 20%;
+      }
+
+      paper-toggle-button {
+        display: inline-block;
+        margin: 0 26px;      
+        vertical-align: middle;
+      }
+
+      paper-button {
+        margin: 0;
+        padding: 0.57em 0.7em;
+      }
+
+      paper-button:hover {
+        background-color: var(--paper-indigo-100);
+      }
+    </style>
+
+    <h1>New purchase</h1>
+    <iron-form id="myform">
+      <form>
+        <div class="text-inputs-wrapper">          
+          <paper-input 
+            class="name-input"
+            required
+            error-message="This field is required" 
+            id="name"
+            label="Name"></paper-input>
+          <paper-input
+            class="price-input"            
+            required
+            error-message="This field is required" 
+            id="price"
+            label="Price"></paper-input>
+        </div><br>
+        <paper-button raised on-tap="_addPurchasePressed" class="custom">Add task</paper-button>
+      </form>
+    </iron-form>
+  </template>
+
+  <script>
+    class ChandlerNewPurchase extends Polymer.Element {
+      static get is() { return 'chandler-new-purchase'; }
+
+      _addPurchasePressed() {
+        let myForm = this.$.myform;
+
+        if (myForm.validate()) {
+          let purchase = {};
+          purchase.name = this.$.name.value;
+          if (this.$.price.value) {
+            purchase.price = this.$.price.value;
+          }
+    
+          this.dispatchEvent(new CustomEvent('add-purchase-btn-pressed', {
+            detail: { purchase: purchase },
+            bubbles: true, composed: true }));
+          myForm.reset();          
+        }
+      }
+    }
+
+    window.customElements.define(ChandlerNewPurchase.is, ChandlerNewPurchase);
+  </script>
+</dom-module>
