@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-datepicker/app-datepicker.html">
+<link rel="import" href="../bower_components/app-datepicker/app-datepicker-dialog.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -19,8 +20,8 @@
     </style>
    
     <h1>Add new invitation</h1>
-    <h3>Picke the date and set the number of guests:</h3>
-    <app-datepicker></app-datepicker>    
+    <h3>Pick a date and set the number of guests:</h3>
+    <app-datepicker autoUpdateDate id="mydatepicker" format="dd/mm/yyyy"></app-datepicker>
 
     <iron-form id="myform">
       <form>          
@@ -30,7 +31,7 @@
           id="numguests"
           label="Number of guests"></paper-input>        
         <br>
-        <paper-button raised on-tap="">Add invitation</paper-button>
+        <paper-button raised on-tap="_addInvitationPressed">Add invitation</paper-button>
       </form>
     </iron-form>
 
@@ -44,20 +45,20 @@
         </template>
         <template>[[item.host]]</template>
       </vaadin-grid-column>
-
+      
+      <vaadin-grid-column width="3em">
+        <template class="header">
+          <vaadin-grid-sorter path="numGuests">Guests</vaadin-grid-sorter>
+        </template>
+        <template>[[item.numGuests]]</template>
+      </vaadin-grid-column>
+      
       <vaadin-grid-column width="3em">
         <template class="header">
           <vaadin-grid-sorter path="date">Date</vaadin-grid-sorter>
         </template>
         <template>[[item.date]]</template>
       </vaadin-grid-column>
-
-      <vaadin-grid-column width="3em">
-          <template class="header">
-            <vaadin-grid-sorter path="date">Guests</vaadin-grid-sorter>
-          </template>
-          <template>[[item.numGuests]]</template>
-        </vaadin-grid-column>
 
     </vaadin-grid>
     
@@ -71,19 +72,36 @@
           type: Array,
           value: [{
             host: "Antonio",
-            date: "2018-10-11",
+            date: "11/10/2018",
             numGuests: 4      
           },{
             host: "Ibáñez",
-            date: "2018-11-06",
+            date: "06/11/2018",
             numGuests: 3            
           },{
             host: "Roch",
-            date: "2018-12-23",
+            date: "23/12/2018",
             numGuests: 5            
           }]
         }
       }}
+
+      _addInvitationPressed() {
+        let myForm = this.$.myform;
+        
+        if (myForm.validate()) {
+          // Change to selected date
+          this.$.mydatepicker.enforceDateChange();
+
+          this.push('invitationsList', {
+            host: "Adrián",
+            date: this.$.mydatepicker.date,
+            numGuests: this.$.numguests.value
+          });
+
+          myForm.reset();
+        }
+      }
     }
 
     window.customElements.define(ChandlerInvitations.is, ChandlerInvitations);

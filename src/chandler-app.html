@@ -144,18 +144,12 @@
         ];
       }
 
-      _routePageChanged(page) {                
-        
-        debugger
-        
+      _routePageChanged(page) {                        
         this.page = page || 'chandler-shopping';         
         this.set('route.path', '/'+this.page);        
       }
 
-      _pageChanged(page) {
-        
-        debugger
-        
+      _pageChanged(page) {        
         // Load page import on demand. Show 404 page if fails
         const resolvedPageUrl = this.resolveUrl(page + '.html');
         Polymer.importHref(
@@ -167,9 +161,6 @@
 
       ready() {
         super.ready();
-
-        debugger
-
         // Manually add controller to the drawer to open and close it
         let drawerLayout = this.$.drawerLayout;
         this.$.toggle.addEventListener('click', function() {
