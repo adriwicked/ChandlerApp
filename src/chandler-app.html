@@ -11,6 +11,7 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="shared-styles.html">
 
 <link rel="lazy-import" href="chandler-shopping.html">
 <link rel="lazy-import" href="chandler-supplies.html">
@@ -19,7 +20,7 @@
 
 <dom-module id="chandler-app">
   <template>
-    <style>
+    <style include="shared-styles">      
       body {
         margin: 0;
         font-family: 'Roboto', 'Noto', sans-serif;
@@ -71,11 +72,15 @@
       }
     </style>
 
-    <app-location route="{{route}}" url-space-regex="^[[rootPath]]">
-    </app-location>
+    <app-location
+      route="{{route}}"
+      url-space-regex="^[[rootPath]]"></app-location>
 
-    <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}">
-    </app-route>
+    <app-route
+      route="{{route}}"
+      pattern="[[rootPath]]:page"
+      data="{{routeData}}"
+      tail="{{subroute}}"></app-route>
 
     <!-- Header -->
     <app-header-layout>
@@ -100,12 +105,14 @@
         </app-drawer>
 
         <!-- Selected view -->
-        <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-          <chandler-shopping name="chandler-shopping"></chandler-shopping>
-          <chandler-supplies name="chandler-supplies"></chandler-supplies>
-          <chandler-invitations name="chandler-invitations"></my-view3>
-          <my-view404 name="view404"></my-view404>
-        </iron-pages>
+        <div class="card">
+          <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+            <chandler-shopping name="chandler-shopping"></chandler-shopping>
+            <chandler-supplies name="chandler-supplies"></chandler-supplies>
+            <chandler-invitations name="chandler-invitations"></chandler-invitations>
+            <my-view404 name="my-view404"></my-view404>
+          </iron-pages>
+        </div>
       </app-drawer-layout>
     </app-header-layout>
 
@@ -126,9 +133,7 @@
             observer: '_pageChanged',
           },
           routeData: Object,
-          subroute: Object,
-          // This shouldn't be neccessary, but the Analyzer isn't picking up
-          // Polymer.Element#rootPath
+          subroute: Object,          
           rootPath: String,
         };
       }
@@ -139,31 +144,33 @@
         ];
       }
 
-      _routePageChanged(page) {        
-        this.page = page || 'chandler-shopping';
-
-        // Close a non-persistent drawer when the page & route are changed.
-        if (!this.$.drawer.persistent) {
-          this.$.drawer.close();
-        }
+      _routePageChanged(page) {                
+        
+        debugger
+        
+        this.page = page || 'chandler-shopping';         
+        this.set('route.path', '/'+this.page);        
       }
 
       _pageChanged(page) {
+        
+        debugger
+        
         // Load page import on demand. Show 404 page if fails
         const resolvedPageUrl = this.resolveUrl(page + '.html');
         Polymer.importHref(
           resolvedPageUrl,
           null,
-          this._showPage404.bind(this),
-          true);
-      }
-
-      _showPage404() {
-        this.page = 'view404';
+          (() => this.page = 'my-view404').bind(this),
+          true);        
       }      
 
       ready() {
         super.ready();
+
+        debugger
+
+        // Manually add controller to the drawer to open and close it
         let drawerLayout = this.$.drawerLayout;
         this.$.toggle.addEventListener('click', function() {
           if (drawerLayout.forceNarrow || !drawerLayout.narrow) {
@@ -172,6 +179,7 @@
             drawerLayout.drawer.toggle();
           }
         });
+
       }
     }        
 

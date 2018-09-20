@@ -1,4 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-datepicker/app-datepicker.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-selection-column.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="chandler-invitations">
@@ -10,15 +17,73 @@
         padding: 10px;
       }
     </style>
+   
+    <h1>Add new invitation</h1>
+    <h3>Picke the date and set the number of guests:</h3>
+    <app-datepicker></app-datepicker>    
 
-  <div class="card">      
-    <h1>Supplies</h1>      
-  </div>
+    <iron-form id="myform">
+      <form>          
+        <paper-input           
+          required
+          error-message="This field is required" 
+          id="numguests"
+          label="Number of guests"></paper-input>        
+        <br>
+        <paper-button raised on-tap="">Add invitation</paper-button>
+      </form>
+    </iron-form>
+
+    <hr><br>
+
+    <vaadin-grid height-by-rows items="[[invitationsList]]">      
+
+      <vaadin-grid-column width="3em">
+        <template class="header">
+          <vaadin-grid-sorter path="host">Host</vaadin-grid-sorter>
+        </template>
+        <template>[[item.host]]</template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column width="3em">
+        <template class="header">
+          <vaadin-grid-sorter path="date">Date</vaadin-grid-sorter>
+        </template>
+        <template>[[item.date]]</template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column width="3em">
+          <template class="header">
+            <vaadin-grid-sorter path="date">Guests</vaadin-grid-sorter>
+          </template>
+          <template>[[item.numGuests]]</template>
+        </vaadin-grid-column>
+
+    </vaadin-grid>
+    
   </template>
 
   <script>
     class ChandlerInvitations extends Polymer.Element {
       static get is() { return 'chandler-invitations'; }
+      static get properties() { return {
+        invitationsList: {
+          type: Array,
+          value: [{
+            host: "Antonio",
+            date: "2018-10-11",
+            numGuests: 4      
+          },{
+            host: "Ibáñez",
+            date: "2018-11-06",
+            numGuests: 3            
+          },{
+            host: "Roch",
+            date: "2018-12-23",
+            numGuests: 5            
+          }]
+        }
+      }}
     }
 
     window.customElements.define(ChandlerInvitations.is, ChandlerInvitations);

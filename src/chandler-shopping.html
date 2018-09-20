@@ -1,7 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="./chandler-new-purchase.html">
 <link rel="import" href="./chandler-purchase-item.html">
-<link rel="import" href="shared-styles.html">
 <link rel="import" href="../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-sorter.html">
 <link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-selection-column.html">
@@ -16,44 +15,37 @@
         padding: 10px;        
       }
     </style>
-
-    <div class="card">      
+      
       <chandler-new-purchase on-add-purchase-btn-pressed="_addPurchase"></chandler-new-purchase>
       <hr><br>
 
-      <vaadin-grid height-by-rows items="[[shoppingList]]">
+    <vaadin-grid height-by-rows items="[[shoppingList]]">
 
-          <!-- <vaadin-grid-selection-column auto-select frozen> </vaadin-grid-selection-column> -->
-    
-          <vaadin-grid-column width="3em">
-            <template class="header">
-              <vaadin-grid-sorter path="firstName">Name</vaadin-grid-sorter>
-            </template>
-            <template>[[item.name]]</template>
-          </vaadin-grid-column>
-    
-          <vaadin-grid-column width="3em">
-            <template class="header">
-              <vaadin-grid-sorter path="lastName">Price</vaadin-grid-sorter>
-            </template>
-            <template>[[item.price]]</template>
-          </vaadin-grid-column>
-    
-          <vaadin-grid-column width="3em" flex-grow="2">
-            <template class="header">
-              <vaadin-grid-sorter path="address.street">Purchased</vaadin-grid-sorter>
-            </template>
-            <template is="dom-if" if="false">
-              <iron-icon icon="myicons:done"></iron-icon>                              
-            </template>
-          </vaadin-grid-column>
-    
-        </vaadin-grid>
+      <vaadin-grid-column width="3em">
+        <template class="header">
+          <vaadin-grid-sorter path="firstName">Name</vaadin-grid-sorter>
+        </template>
+        <template>[[item.name]]</template>
+      </vaadin-grid-column>
 
-      <!-- <template is="dom-repeat" items="[[shoppingList]]" as="purchase">
-        <chandler-purchase-item purchase="[[purchase]]"></chandler-purchase-item>        
-      </template> -->
-    </div>
+      <vaadin-grid-column width="3em">
+        <template class="header">
+          <vaadin-grid-sorter path="lastName">Price</vaadin-grid-sorter>
+        </template>
+        <template>[[item.price]]</template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column width="3em" flex-grow="2">
+        <template class="header">
+          <vaadin-grid-sorter path="address.street">Purchased</vaadin-grid-sorter>
+        </template>
+        <template is="dom-if" if="false">
+          <iron-icon icon="myicons:done"></iron-icon>                              
+        </template>
+      </vaadin-grid-column>
+
+    </vaadin-grid>
+
   </template>
 
   <script>

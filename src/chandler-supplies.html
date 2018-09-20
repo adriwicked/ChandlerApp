@@ -1,5 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/highcharts-chart/highcharts-chart.html">
 
 <dom-module id="chandler-supplies">
   <template>
@@ -10,15 +10,31 @@
         padding: 10px;
       }
     </style>
-
-    <div class="card">      
-      <h1>Supplies</h1>      
-    </div>
+  
+    <highcharts-chart 
+      legend
+      type="area"
+      data="[[chartData]]"
+      title="Supplies expenses"
+      x-label="Months"
+      y-label="Amount"></highcharts-chart>
   </template>
 
   <script>
     class ChandlerSupplies extends Polymer.Element {
       static get is() { return 'chandler-supplies'; }
+      static get properties() { return {
+        chartData: {
+            type: Array,
+            value: [{
+              name: 'Water',
+              data: [30, 25, 35, 24, 29, 31]
+            }, {
+              name: 'Electricity',
+              data: [22, 32, 24, 21, 19, 32]
+            }]
+          }
+      }}
     }
 
     window.customElements.define(ChandlerSupplies.is, ChandlerSupplies);
