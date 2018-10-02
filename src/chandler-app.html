@@ -31,6 +31,7 @@
         --app-secondary-color: black;
         --app-background-color: #0f1213;
         --app-drawer-width: 200px;
+        /* --chandler-invitations-bkg-test: blue; */
         
         display: block;
       }
@@ -116,7 +117,6 @@
       </app-drawer-layout>
     </app-header-layout>
 
-
   </template>
 
   <script>    
@@ -144,9 +144,9 @@
         ];
       }
 
-      _routePageChanged(page) {                        
+      _routePageChanged(page) {                            
         this.page = page || 'chandler-shopping';         
-        this.set('route.path', '/'+this.page);        
+        // this.set('route.path', '/'+this.page);        
       }
 
       _pageChanged(page) {        
