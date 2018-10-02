@@ -1,0 +1,58 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="./my-icons.html">
+
+<dom-module id="chandler-registration-form">
+  <template>
+    <style include="shared-styles">
+      :host {        
+        display: block;
+        padding: 10px;        
+      }
+    </style>
+
+    <h1>Registration</h1>
+    <iron-form id="registrationForm">
+      <form>
+        <div class="text-inputs-wrapper">          
+          <paper-input required error-message="This field is required" 
+            id="name" label="Name"></paper-input>
+          <paper-input required error-message="This field is required" 
+            id="email" label="Email"></paper-input>
+          <paper-input required error-message="This field is required" 
+            id="password" label="Password"></paper-input>
+        </div><br>
+        <paper-button raised on-tap="_signUpPressed" class="custom">Sign up</paper-button>
+      </form>
+    </iron-form>
+
+  </template>
+
+  <script>
+    class ChandlerRegistrationForm extends Polymer.Element {
+      static get is() { return 'chandler-registration-form'; }
+      static get properties() { return { }}
+
+      _signUpPressed() {
+        let registrationForm = this.$["registrationForm"];
+
+        if (registrationForm.validate()) {              
+          this.dispatchEvent(new CustomEvent('sign-up-btn-pressed', {
+            detail: { user: {
+              name: this.$.name.value,
+              email: this.$.email.value,
+              password: this.$.password.value
+            }},
+            bubbles: true,
+            composed: true }));
+          registrationForm.reset();
+        }
+      }
+    }
+
+    window.customElements.define(ChandlerRegistrationForm.is, ChandlerRegistrationForm);
+  </script>
+</dom-module>

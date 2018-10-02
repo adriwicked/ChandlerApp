@@ -11,6 +11,7 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="chandler-registration.html">
 <link rel="import" href="shared-styles.html">
 
 <link rel="lazy-import" href="chandler-shopping.html">
@@ -83,40 +84,42 @@
       data="{{routeData}}"
       tail="{{subroute}}"></app-route>
 
-    <!-- Header -->
-    <app-header-layout>
-      <app-header fixed effects="waterfall" slot="header">
-        <app-toolbar>
-          <paper-icon-button id="toggle" icon="menu"></paper-icon-button>
-          <div main-title>Chandler</div>
-        </app-toolbar>
-      </app-header>
+    <!-- Header -->    
+      <app-header-layout>
+        <template is="dom-if" if="{{authenticated}}">
+          <app-header fixed effects="waterfall" slot="header">
+            <app-toolbar>
+              <paper-icon-button id="toggle" icon="menu" on-click="_onClick"></paper-icon-button>
+              <div main-title>Chandler</div>
+            </app-toolbar>
+          </app-header>
+        </template>
+        <app-drawer-layout id="drawerLayout">
+          <template is="dom-if" if="{{authenticated}}">
+            <!-- Drawer content -->
+            <app-drawer id="drawer" slot="drawer">
+              <div class="drawer-content">
+                <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                  <a name="chandler-shopping" href="[[rootPath]]chandler-shopping"><iron-icon icon="icons:shopping-cart"></iron-icon> Shopping list</a>
+                  <a name="chandler-supplies" href="[[rootPath]]chandler-supplies"><iron-icon icon="icons:lightbulb-outline"></iron-icon> Supplies</a>
+                  <a name="chandler-invitations" href="[[rootPath]]chandler-invitations"><iron-icon icon="icons:perm-contact-calendar"></iron-icon> Invitations</a>
+                </iron-selector>
+              </div>
+            </app-drawer>
+          </template>
 
-      <app-drawer-layout id="drawerLayout">
-
-        <!-- Drawer content -->
-        <app-drawer id="drawer" slot="drawer">
-          <div class="drawer-content">
-            <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-              <a name="chandler-shopping" href="[[rootPath]]chandler-shopping"><iron-icon icon="icons:shopping-cart"></iron-icon> Shopping list</a>
-              <a name="chandler-supplies" href="[[rootPath]]chandler-supplies"><iron-icon icon="icons:lightbulb-outline"></iron-icon> Supplies</a>
-              <a name="chandler-invitations" href="[[rootPath]]chandler-invitations"><iron-icon icon="icons:perm-contact-calendar"></iron-icon> Invitations</a>
-            </iron-selector>
+          <!-- Selected view -->
+          <div class="card">
+            <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+              <chandler-registration name="chandler-registration"></chandler-registration>
+              <chandler-shopping name="chandler-shopping"></chandler-shopping>
+              <chandler-supplies name="chandler-supplies"></chandler-supplies>
+              <chandler-invitations name="chandler-invitations"></chandler-invitations>
+              <my-view404 name="my-view404"></my-view404>
+            </iron-pages>
           </div>
-        </app-drawer>
-
-        <!-- Selected view -->
-        <div class="card">
-          <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-            <chandler-shopping name="chandler-shopping"></chandler-shopping>
-            <chandler-supplies name="chandler-supplies"></chandler-supplies>
-            <chandler-invitations name="chandler-invitations"></chandler-invitations>
-            <my-view404 name="my-view404"></my-view404>
-          </iron-pages>
-        </div>
-      </app-drawer-layout>
-    </app-header-layout>
-
+        </app-drawer-layout>
+      </app-header-layout>    
   </template>
 
   <script>    
@@ -135,6 +138,10 @@
           routeData: Object,
           subroute: Object,          
           rootPath: String,
+          authenticated: {
+            type: Boolean,
+            value: true
+          }
         };
       }
 
@@ -145,7 +152,7 @@
       }
 
       _routePageChanged(page) {                            
-        this.page = page || 'chandler-shopping';         
+        this.page = page || 'chandler-registration';         
         // this.set('route.path', '/'+this.page);        
       }
 
@@ -158,19 +165,14 @@
           (() => this.page = 'my-view404').bind(this),
           true);        
       }      
-
-      ready() {
-        super.ready();
-        // Manually add controller to the drawer to open and close it
+      
+      _onClick(){        
         let drawerLayout = this.$.drawerLayout;
-        this.$.toggle.addEventListener('click', function() {
-          if (drawerLayout.forceNarrow || !drawerLayout.narrow) {
-            drawerLayout.forceNarrow = !drawerLayout.forceNarrow;
-          } else {
-            drawerLayout.drawer.toggle();
-          }
-        });
-
+        if (drawerLayout.forceNarrow || !drawerLayout.narrow) {
+          drawerLayout.forceNarrow = !drawerLayout.forceNarrow;
+        } else {
+          drawerLayout.drawer.toggle();
+        }      
       }
     }        
 

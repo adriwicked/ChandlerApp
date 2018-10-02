@@ -1,0 +1,43 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="chandler-registration-form.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+
+<dom-module id="chandler-registration">
+  <template>
+    <style include="shared-styles">
+      :host {        
+        display: block;
+        padding: 10px;        
+      }
+    </style>
+
+    <iron-ajax            
+      id="xhr"
+      url="http://localhost:3000/users"
+      handle-as="json"
+      last-response="{{ response }}"
+      on-response="_handleResponse"></iron-ajax>
+
+    <chandler-registration-form on-sign-up-btn-pressed="_signUpPressed"></chandler-registration-form>
+
+  </template>
+
+  <script>
+    class ChandlerRegistration extends Polymer.Element {
+      static get is() { return 'chandler-registration'; }
+      static get properties() { return { }}
+
+      _signUpPressed(e) {
+        console.log(e.detail.user);
+        this.$.xhr.generateRequest().completes.then(() => console.log(this.response));
+      }
+
+      _handleResponse(req) {
+        // console.log(req);
+      }
+    }
+
+    window.customElements.define(ChandlerRegistration.is, ChandlerRegistration);
+  </script>
+</dom-module>
