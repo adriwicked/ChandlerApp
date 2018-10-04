@@ -14,10 +14,10 @@
 
     <iron-ajax            
       id="xhr"
-      url="http://localhost:3000/users"
-      handle-as="json"
-      last-response="{{ response }}"
-      on-response="_handleResponse"></iron-ajax>
+      method="post"
+      url="http://localhost:3000/sessions"
+      content-type="application/json"      
+      last-response="{{ response }}"></iron-ajax>
 
     <chandler-registration-form on-sign-up-btn-pressed="_signUpPressed"></chandler-registration-form>
 
@@ -30,12 +30,9 @@
 
       _signUpPressed(e) {
         console.log(e.detail.user);
-        this.$.xhr.generateRequest().completes.then(() => console.log(this.response));
-      }
-
-      _handleResponse(req) {
-        // console.log(req);
-      }
+        this.$.xhr.body = e.detail.user;
+        this.$.xhr.generateRequest();
+      }      
     }
 
     window.customElements.define(ChandlerRegistration.is, ChandlerRegistration);
